@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Relatório Médico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      .input-field {
+        border-bottom: 1px solid black;
+        padding: 3px 0;
+        margin-bottom: 2px;
+        min-height: 24px;
+      }
+
+      .static-field {
+        border-bottom: 1px solid #666;
+        min-height: 30px;
+        margin-bottom: 5px;
+      }
+
+      .text-area-field {
+        border: 1px solid #666;
+        width: 100%;
+        min-height: 60px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+      }
+
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 p-4">
+    <div
+      id="print-container"
+      class="max-w-4xl mx-auto bg-white p-6 rounded shadow"
+    >
+      <!-- Header with logos -->
+      <div class="flex justify-between items-center mb-4">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/12/PMGO_Logo.png"
+          alt="PMGO Logo"
+          class="h-24"
+          id="pmgo-logo"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Bras%C3%A3o_de_Goi%C3%A1s.svg"
+          alt="Estado de Goiás Coat of Arms"
+          class="h-24"
+          id="goias-logo"
+        />
+      </div>
+
+      <!-- Headers -->
+      <h2 class="text-2xl font-bold text-center mb-4">ESTADO DE GOIÁS</h2>
+      <h3 class="text-xl font-bold text-center mb-2">
+        POLÍCIA MILITAR DE GOIÁS
+      </h3>
+      <h3 class="text-xl font-bold text-center mb-2">
+        11º COMANDO REGIONAL DE POLÍCIA MILITAR
+      </h3>
+      <h3 class="text-xl font-bold text-center mb-2">
+        14ª COMPANHIA DEPENDENTE DE POLÍCIA MILITAR
+      </h3>
+      <h3 class="text-xl font-bold text-center mb-4">2º PEL OPERACIONAL PM</h3>
+
+      <p class="text-center mb-4">RAI nº: ________________________</p>
+
+      <h3 class="text-xl font-bold text-center mb-4">RELATÓRIO MÉDICO</h3>
+
+      <p class="text-center mb-4">
+        (Comunicação obrigatória de fato no exercício da Medicina, artigo 66 -
+        II, do Decreto Lei n: 3.688 de 03/10/1941, LCP e artigo 112 do Código de
+        Ética médica).
+      </p>
+
+      <!-- Editable fields -->
+      <div class="mb-2">
+        <strong>Paciente:</strong>
+        <input
+          type="text"
+          id="paciente"
+          class="input-field w-full max-w-md"
+          placeholder="Nome do paciente"
+        />
+      </div>
+
+      <div class="mb-2">
+        <strong>Filiação:</strong>
+        <input
+          type="text"
+          id="filiacao"
+          class="input-field w-full max-w-md"
+          placeholder="Filiação"
+        />
+      </div>
+
+      <div class="mb-4">
+        <strong>Endereço:</strong>
+        <input
+          type="text"
+          id="endereco"
+          class="input-field w-full max-w-md"
+          placeholder="Endereço"
+        />
+      </div>
+
+      <!-- Static fields for manual filling -->
+      <div class="mb-4">
+        <p class="mb-2"><strong>I - ESTADO GERAL:</strong></p>
+        <div class="static-field text-area-field"></div>
+      </div>
+
+      <div class="mb-4">
+        <p class="mb-2">
+          <strong>II - LESÕES APRESENTADAS</strong> (Descrever as lesões quanto
+          ao tipo, dimensões, planos e gravidade):
+        </p>
+        <div class="static-field text-area-field"></div>
+      </div>
+
+      <div class="mb-4">
+        <p class="mb-2">
+          <strong>III - Instrumento ou meio que produziu a ofensa:</strong>
+        </p>
+        <div class="static-field text-area-field"></div>
+      </div>
+
+      <div class="mb-4">
+        <p class="mb-2"><strong>IV - Tratamento feito:</strong></p>
+        <div class="static-field text-area-field"></div>
+      </div>
+
+      <div class="mb-4">
+        <p class="mb-2">
+          <strong>V - Seqüelas que futuramente poderá apresentar:</strong>
+        </p>
+        <div class="static-field text-area-field"></div>
+      </div>
+
+      <div class="mb-4">
+        <p class="mb-2">
+          <strong
+            >VI - O paciente poderá ficar afastado de suas funções por
+            ____________ dia(s).</strong
+          >
+        </p>
+      </div>
+
+      <div class="mb-2">
+        <p>
+          Local e data: ____________________ / GO, ____ de ____________ de
+          _______
+        </p>
+      </div>
+
+      <div class="mb-2">
+        <p>Nosocômio: _________________________________________________</p>
+      </div>
+
+      <div class="mb-4">
+        <p>Médico: _______________________________ CRM: _____________ / ___</p>
+      </div>
+    </div>
+
+    <!-- Buttons - outside the print container -->
+    <div class="max-w-4xl mx-auto mt-4 flex space-x-4 no-print">
+      <button
+        onclick="exportToPDF()"
+        class="bg-green-500 text-white px-4 py-2 rounded no-print"
+      >
+        Exportar para PDF
+      </button>
+      <button
+        onclick="shareViaWhatsApp()"
+        class="bg-green-500 text-white px-4 py-2 rounded no-print"
+      >
+        Enviar via WhatsApp
+      </button>
+    </div>
+
+    <script>
+      async function generatePDF() {
+        const element = document.getElementById("print-container");
+
+        // Ensure images are loaded before generating PDF
+        await Promise.all(
+          Array.from(element.querySelectorAll("img")).map((img) => {
+            if (img.complete) return Promise.resolve();
+            return new Promise((resolve) => {
+              img.onload = resolve;
+              img.onerror = resolve;
+            });
+          })
+        );
+
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+        const imgWidth = canvas.width / 2; // since scale=2
+        const imgHeight = canvas.height / 2;
+        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+        const imgX = (pdfWidth - imgWidth * ratio) / 2;
+        const imgY = 0;
+
+        pdf.addImage(
+          imgData,
+          "PNG",
+          imgX,
+          imgY,
+          imgWidth * ratio,
+          imgHeight * ratio
+        );
+
+        return pdf;
+      }
+
+      async function exportToPDF() {
+        const pdf = await generatePDF();
+        pdf.save("relatorio_medico.pdf");
+      }
+
+      async function shareViaWhatsApp() {
+        const pdf = await generatePDF();
+        const blob = pdf.output("blob");
+        const file = new File([blob], "relatorio_medico.pdf", {
+          type: "application/pdf",
+        });
+
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              files: [file],
+              title: "Relatório Médico",
+              text: "Aqui está o relatório médico preenchido.",
+            });
+          } catch (error) {
+            console.error("Erro ao compartilhar:", error);
+            alert("Não foi possível compartilhar. Baixando o PDF...");
+            exportToPDF();
+          }
+        } else {
+          alert("Compartilhamento não suportado. Baixando o PDF...");
+          exportToPDF();
+        }
+      }
+    </script>
+  </body>
+</html>
