@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relatório Médico</title>
+    <title>Documentos Policiais</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -19,6 +19,16 @@
         padding: 3px 0;
         margin-bottom: 2px;
         min-height: 24px;
+      }
+
+      .header-input {
+        border-bottom: none;
+        padding: 3px 0;
+        margin-bottom: 0;
+        font-weight: bold;
+        font-size: 1.25rem;
+        text-align: center;
+        width: 100%;
       }
 
       .static-field {
@@ -43,12 +53,50 @@
         max-width: 100%;
         height: auto;
       }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .tab {
+        cursor: pointer;
+        padding: 10px 20px;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        border-radius: 5px 5px 0 0;
+        margin-right: 2px;
+      }
+
+      .tab.active {
+        background-color: white;
+        border-bottom: 1px solid white;
+      }
     </style>
   </head>
   <body class="bg-gray-100 p-4">
+    <!-- Tabs navigation -->
+    <div class="max-w-4xl mx-auto mb-2 no-print">
+      <div class="flex border-b border-gray-200">
+        <div class="tab active" onclick="openTab(event, 'relatorio-medico')">
+          Relatório Médico
+        </div>
+        <div class="tab" onclick="openTab(event, 'termo-manifestacao')">
+          Termo de Manifestação do Ofendido
+        </div>
+        <div class="tab" onclick="openTab(event, 'termo-compromisso')">
+          Termo de Compromisso de Comparecimento
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 1: Relatório Médico -->
     <div
-      id="print-container"
-      class="max-w-4xl mx-auto bg-white p-6 rounded shadow"
+      id="relatorio-medico"
+      class="tab-content active max-w-4xl mx-auto bg-white p-6 rounded shadow"
     >
       <!-- Header with logos -->
       <div class="flex justify-between items-center mb-4">
@@ -164,8 +212,19 @@
 
       <div class="mb-2">
         <p>
-          Local e data: ____________________ / GO, ____ de ____________ de
-          _______
+          Local e data:
+          <input
+            type="text"
+            class="input-field w-32 inline-block"
+            placeholder="Cidade"
+          />
+          / GO, <input type="text" class="input-field w-8 inline-block" /> de
+          <input type="text" class="input-field w-32 inline-block" /> de
+          <input
+            type="text"
+            class="input-field w-16 inline-block"
+            placeholder="Ano"
+          />
         </p>
       </div>
 
@@ -175,6 +234,280 @@
 
       <div class="mb-4">
         <p>Médico: _______________________________ CRM: _____________ / ___</p>
+      </div>
+    </div>
+
+    <!-- Tab 2: Termo de Manifestação do Ofendido -->
+    <div
+      id="termo-manifestacao"
+      class="tab-content max-w-4xl mx-auto bg-white p-6 rounded shadow"
+    >
+      <!-- Header with logos -->
+      <div class="flex justify-between items-center mb-4">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/12/PMGO_Logo.png"
+          alt="PMGO Logo"
+          class="h-24"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Bras%C3%A3o_de_Goi%C3%A1s.svg"
+          alt="Estado de Goiás Coat of Arms"
+          class="h-24"
+        />
+      </div>
+
+      <!-- Headers -->
+      <h2 class="text-2xl font-bold text-center mb-4">ESTADO DE GOIÁS</h2>
+      <h3 class="text-xl font-bold text-center mb-2">
+        SECRETARIA DE SEGURANÇA PÚBLICA
+      </h3>
+      <h3 class="text-xl font-bold text-center mb-2">
+        POLÍCIA MILITAR DO ESTADO DE GOIÁS
+      </h3>
+      <div class="mb-2">
+        <input
+          type="text"
+          class="header-input"
+          placeholder="(informar CRPM) COMANDO REGIONAL DE POLÍCIA MILITAR"
+        />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          class="header-input"
+          placeholder="(informar unidade) DE POLÍCIA MILITAR"
+        />
+      </div>
+
+      <h3 class="text-xl font-bold text-center mb-2 mt-6">
+        TERMO DE MANIFESTAÇÃO DO OFENDIDO
+      </h3>
+      <p class="text-center mb-6">
+        Artigo 69 - Lei 9.099/1995 c/c<br />
+        Artigo 39 – Decreto- lei 3689/1941<br />
+        Provimento nº 18/2015 - Corregedoria Geral de Justiça do Estado de Goiás
+      </p>
+
+      <p class="mb-4">
+        Eu
+        <input type="text" class="input-field w-3/4 inline-block" />, já
+        devidamente qualificado (a) no Termo Circunstanciado de Ocorrência
+        lavrado pela Polícia Militar sob nº
+        <input type="text" class="input-field w-16 inline-block" />/
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />
+        -
+        <input
+          type="text"
+          class="input-field w-24 inline-block"
+          placeholder="Unidade"
+        />
+        e RAI nº <input type="text" class="input-field w-32 inline-block" />,
+        por este instrumento, manifesto meu interesse em REPRESENTAR em desfavor
+        do autor do fato constante no respectivo Termo de Ocorrência.
+      </p>
+
+      <p class="mb-8">
+        Declaro estar ciente de que devo comparecer ao JUIZADO ESPECIAL CRIMINAL
+        da Comarca de
+        <input
+          type="text"
+          class="input-field inline-block w-48"
+          placeholder="Alto Paraíso de Goiás"
+        />, no dia
+        <input type="text" class="input-field w-16 inline-block" />/<input
+          type="text"
+          class="input-field w-16 inline-block"
+        />/
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />, às
+        <input type="text" class="input-field w-16 inline-block" />:<input
+          type="text"
+          class="input-field w-16 inline-block"
+        />
+        horas ou em dia e hora a serem determinados posteriormente, quando da
+        intimação do referido juízo na forma da lei.
+      </p>
+
+      <p class="mt-12 mb-2">
+        <input
+          type="text"
+          class="input-field inline-block w-48"
+          placeholder="Alto Paraíso de Goiás"
+        />
+        / GO, <input type="text" class="input-field w-16 inline-block" /> de
+        <input type="text" class="input-field w-32 inline-block" /> de
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />.
+      </p>
+
+      <div class="mt-12 mb-8">
+        <p class="mb-1">Policial Militar:</p>
+        <p>(Posto/Graduação, RG, nome e assinatura)</p>
+        <div class="static-field"></div>
+      </div>
+
+      <div class="mt-8">
+        <p class="mb-1">Vítima/Representante:</p>
+        <p>(Nome completo e assinatura)</p>
+        <div class="static-field"></div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Termo de Compromisso de Comparecimento -->
+    <div
+      id="termo-compromisso"
+      class="tab-content max-w-4xl mx-auto bg-white p-6 rounded shadow"
+    >
+      <!-- Header with logos -->
+      <div class="flex justify-between items-center mb-4">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/12/PMGO_Logo.png"
+          alt="PMGO Logo"
+          class="h-24"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Bras%C3%A3o_de_Goi%C3%A1s.svg"
+          alt="Estado de Goiás Coat of Arms"
+          class="h-24"
+        />
+      </div>
+
+      <!-- Headers -->
+      <h2 class="text-2xl font-bold text-center mb-4">ESTADO DE GOIÁS</h2>
+      <h3 class="text-xl font-bold text-center mb-2">
+        SECRETARIA DE SEGURANÇA PÚBLICA
+      </h3>
+      <h3 class="text-xl font-bold text-center mb-2">
+        POLÍCIA MILITAR DO ESTADO DE GOIÁS
+      </h3>
+      <div class="mb-2">
+        <input
+          type="text"
+          class="header-input"
+          placeholder="(informar CRPM) COMANDO REGIONAL DE POLÍCIA MILITAR"
+        />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          class="header-input"
+          placeholder="(informar unidade) DE POLÍCIA MILITAR"
+        />
+      </div>
+
+      <h3 class="text-xl font-bold text-center mb-2 mt-6">
+        TERMO DE COMPROMISSO DE COMPARECIMENTO
+      </h3>
+      <p class="text-center mb-6">
+        Artigo 69 - Lei 9.099/1995 c/c<br />
+        Provimento nº 18/2015 - Corregedoria Geral de Justiça do Estado de Goiás
+      </p>
+
+      <p class="mb-4">
+        Nos termos do parágrafo único do art. 69 da lei 9.099/95, deixo de impor
+        prisão em flagrante delito a
+        <input type="text" class="input-field w-3/4 inline-block" /> já
+        devidamente qualificado, em razão da lavratura do Termo Circunstanciado
+        de Ocorrência nº:
+        <input type="text" class="input-field w-16 inline-block" />/
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />
+        -
+        <input
+          type="text"
+          class="input-field w-24 inline-block"
+          placeholder="Unidade"
+        />
+        e RAI nº <input type="text" class="input-field w-32 inline-block" />, e
+        que, por este instrumento, ASSUME o compromisso de comparecer ao JUIZADO
+        ESPECIAL CRIMINAL da Comarca de
+        <input
+          type="text"
+          class="input-field inline-block w-48"
+          placeholder="Alto Paraíso de Goiás"
+        />
+        / GO, no dia
+        <input type="text" class="input-field w-16 inline-block" />/<input
+          type="text"
+          class="input-field w-16 inline-block"
+        />/
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />, às
+        <input type="text" class="input-field w-16 inline-block" />:<input
+          type="text"
+          class="input-field w-16 inline-block"
+        />
+        horas ou em dia e hora a serem determinados posteriormente quando da
+        intimação do referido juízo na forma da lei.
+      </p>
+
+      <p class="mb-8">
+        Fica ciente que, o não comparecimento, o sujeitará às sanções legais,
+        bem como deverá comparecer acompanhado por advogado, sendo que, na sua
+        falta, ser-lhe-á designado defensor público.
+      </p>
+
+      <p class="mt-12 mb-2">
+        <input
+          type="text"
+          class="input-field inline-block w-48"
+          placeholder="Alto Paraíso de Goiás"
+        />
+        / GO, <input type="text" class="input-field w-16 inline-block" /> de
+        <input type="text" class="input-field w-32 inline-block" /> de
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />.
+      </p>
+
+      <div class="mt-12 mb-4">
+        <p class="mb-1">Policial Militar:</p>
+        <p>(Posto/Graduação, RG, nome e assinatura)</p>
+        <div class="static-field"></div>
+      </div>
+
+      <div class="mb-8">
+        <p class="mb-1">
+          Data e Hora:
+          <input type="text" class="input-field w-16 inline-block" />/<input
+            type="text"
+            class="input-field w-16 inline-block"
+          />/
+          <input
+            type="text"
+            class="input-field w-16 inline-block"
+            placeholder="Ano"
+          />
+          às <input type="text" class="input-field w-16 inline-block" />:<input
+            type="text"
+            class="input-field w-16 inline-block"
+          />
+          horas.
+        </p>
+      </div>
+
+      <div class="mt-8">
+        <p class="mb-1">Compromissado (autor):</p>
+        <p>(Nome completo e assinatura)</p>
+        <div class="static-field"></div>
       </div>
     </div>
 
@@ -195,8 +528,40 @@
     </div>
 
     <script>
+      // Tab switching functionality
+      function openTab(evt, tabName) {
+        // Hide all tab contents
+        const tabContents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContents.length; i++) {
+          tabContents[i].classList.remove("active");
+        }
+
+        // Remove active class from all tabs
+        const tabs = document.getElementsByClassName("tab");
+        for (let i = 0; i < tabs.length; i++) {
+          tabs[i].classList.remove("active");
+        }
+
+        // Show the specific tab content
+        document.getElementById(tabName).classList.add("active");
+
+        // Add an active class to the button that opened the tab
+        evt.currentTarget.classList.add("active");
+      }
+
+      // Track the currently active tab for PDF generation
+      function getCurrentActiveTab() {
+        const tabContents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < tabContents.length; i++) {
+          if (tabContents[i].classList.contains("active")) {
+            return tabContents[i];
+          }
+        }
+        return document.getElementById("relatorio-medico"); // Default
+      }
+
       async function generatePDF() {
-        const element = document.getElementById("print-container");
+        const element = getCurrentActiveTab();
 
         // Ensure images are loaded before generating PDF
         await Promise.all(
@@ -241,13 +606,42 @@
 
       async function exportToPDF() {
         const pdf = await generatePDF();
-        pdf.save("relatorio_medico.pdf");
+        // Get name of the current tab for the filename
+        const activeTabId = getCurrentActiveTab().id;
+        let filename = "documento";
+
+        if (activeTabId === "relatorio-medico") {
+          filename = "relatorio_medico";
+        } else if (activeTabId === "termo-manifestacao") {
+          filename = "termo_manifestacao";
+        } else if (activeTabId === "termo-compromisso") {
+          filename = "termo_compromisso";
+        }
+
+        pdf.save(`${filename}.pdf`);
       }
 
       async function shareViaWhatsApp() {
         const pdf = await generatePDF();
         const blob = pdf.output("blob");
-        const file = new File([blob], "relatorio_medico.pdf", {
+
+        // Get name of the current tab for the filename
+        const activeTabId = getCurrentActiveTab().id;
+        let filename = "documento";
+        let title = "Documento";
+
+        if (activeTabId === "relatorio-medico") {
+          filename = "relatorio_medico";
+          title = "Relatório Médico";
+        } else if (activeTabId === "termo-manifestacao") {
+          filename = "termo_manifestacao";
+          title = "Termo de Manifestação do Ofendido";
+        } else if (activeTabId === "termo-compromisso") {
+          filename = "termo_compromisso";
+          title = "Termo de Compromisso de Comparecimento";
+        }
+
+        const file = new File([blob], `${filename}.pdf`, {
           type: "application/pdf",
         });
 
@@ -255,8 +649,8 @@
           try {
             await navigator.share({
               files: [file],
-              title: "Relatório Médico",
-              text: "Aqui está o relatório médico preenchido.",
+              title: title,
+              text: `Aqui está o documento: ${title}`,
             });
           } catch (error) {
             console.error("Erro ao compartilhar:", error);
