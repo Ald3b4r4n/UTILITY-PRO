@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
     <style>
       @media print {
         .no-print {
@@ -74,6 +75,39 @@
       .tab.active {
         background-color: white;
         border-bottom: 1px solid white;
+      }
+
+      .signature-container {
+        margin: 10px 0;
+        text-align: left;
+        width: 100%;
+      }
+
+      .signature-pad {
+        border: 1px solid #000;
+        margin-bottom: 10px;
+        background-color: #fff;
+        width: 100%;
+        max-width: 500px;
+      }
+
+      .clear-button {
+        background-color: #f44336;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-bottom: 15px;
+      }
+
+      .signature-name-field {
+        width: 100%;
+        max-width: 500px;
+        border-bottom: 1px solid #666;
+        padding: 5px 0;
+        margin-bottom: 10px;
+        font-weight: bold;
       }
     </style>
   </head>
@@ -342,13 +376,63 @@
       <div class="mt-12 mb-8">
         <p class="mb-1">Policial Militar:</p>
         <p>(Posto/Graduação, RG, nome e assinatura)</p>
-        <div class="static-field"></div>
+        <br />
+
+        <!-- Campo editável para o nome do policial -->
+        <input
+          type="text"
+          class="signature-name-field"
+          id="nome-policial-manifestacao"
+          placeholder="Nome do Policial Militar"
+        />
+
+        <!-- Área de assinatura digital para o policial -->
+        <div class="signature-container">
+          <canvas
+            id="signature-pad-policial-manifestacao"
+            class="signature-pad"
+            width="500"
+            height="150"
+          ></canvas>
+          <button
+            type="button"
+            class="clear-button no-print"
+            id="clear-policial-manifestacao"
+          >
+            Limpar
+          </button>
+        </div>
       </div>
 
       <div class="mt-8">
         <p class="mb-1">Vítima/Representante:</p>
         <p>(Nome completo e assinatura)</p>
-        <div class="static-field"></div>
+        <br />
+
+        <!-- Campo editável para o nome da vítima -->
+        <input
+          type="text"
+          class="signature-name-field"
+          id="nome-vitima-manifestacao"
+          placeholder="Nome da Vítima/Representante"
+        />
+
+        <!-- Área de assinatura digital para a vítima -->
+        <div class="signature-container">
+          <canvas
+            id="signature-pad-vitima-manifestacao"
+            class="signature-pad"
+            width="500"
+            height="150"
+          ></canvas>
+          <button
+            type="button"
+            class="clear-button no-print"
+            id="clear-vitima-manifestacao"
+          >
+            Limpar
+          </button>
+        </div>
       </div>
     </div>
 
@@ -470,7 +554,32 @@
       <div class="mt-12 mb-4">
         <p class="mb-1">Policial Militar:</p>
         <p>(Posto/Graduação, RG, nome e assinatura)</p>
-        <div class="static-field"></div>
+        <br />
+
+        <!-- Campo editável para o nome do policial -->
+        <input
+          type="text"
+          class="signature-name-field"
+          id="nome-policial-compromisso"
+          placeholder="Nome do Policial Militar"
+        />
+
+        <!-- Área de assinatura digital para o policial -->
+        <div class="signature-container">
+          <canvas
+            id="signature-pad-policial-compromisso"
+            class="signature-pad"
+            width="500"
+            height="150"
+          ></canvas>
+          <button
+            type="button"
+            class="clear-button no-print"
+            id="clear-policial-compromisso"
+          >
+            Limpar
+          </button>
+        </div>
       </div>
 
       <div class="mb-8">
@@ -496,7 +605,32 @@
       <div class="mt-8">
         <p class="mb-1">Compromissado (autor):</p>
         <p>(Nome completo e assinatura)</p>
-        <div class="static-field"></div>
+        <br />
+
+        <!-- Campo editável para o nome do autor -->
+        <input
+          type="text"
+          class="signature-name-field"
+          id="nome-autor-compromisso"
+          placeholder="Nome do Compromissado (autor)"
+        />
+
+        <!-- Área de assinatura digital para o autor -->
+        <div class="signature-container">
+          <canvas
+            id="signature-pad-autor-compromisso"
+            class="signature-pad"
+            width="500"
+            height="150"
+          ></canvas>
+          <button
+            type="button"
+            class="clear-button no-print"
+            id="clear-autor-compromisso"
+          >
+            Limpar
+          </button>
+        </div>
       </div>
     </div>
 
@@ -517,6 +651,53 @@
     </div>
 
     <script>
+      // Initialize signature pads
+      let signaturePadPolicialManifestacao;
+      let signaturePadVitimaManifestacao;
+      let signaturePadPolicialCompromisso;
+      let signaturePadAutorCompromisso;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        // Inicializar os pads de assinatura
+        signaturePadPolicialManifestacao = new SignaturePad(
+          document.getElementById("signature-pad-policial-manifestacao")
+        );
+        signaturePadVitimaManifestacao = new SignaturePad(
+          document.getElementById("signature-pad-vitima-manifestacao")
+        );
+        signaturePadPolicialCompromisso = new SignaturePad(
+          document.getElementById("signature-pad-policial-compromisso")
+        );
+        signaturePadAutorCompromisso = new SignaturePad(
+          document.getElementById("signature-pad-autor-compromisso")
+        );
+
+        // Botões para limpar assinaturas
+        document
+          .getElementById("clear-policial-manifestacao")
+          .addEventListener("click", function () {
+            signaturePadPolicialManifestacao.clear();
+          });
+
+        document
+          .getElementById("clear-vitima-manifestacao")
+          .addEventListener("click", function () {
+            signaturePadVitimaManifestacao.clear();
+          });
+
+        document
+          .getElementById("clear-policial-compromisso")
+          .addEventListener("click", function () {
+            signaturePadPolicialCompromisso.clear();
+          });
+
+        document
+          .getElementById("clear-autor-compromisso")
+          .addEventListener("click", function () {
+            signaturePadAutorCompromisso.clear();
+          });
+      });
+
       // Tab switching functionality
       function openTab(evt, tabName) {
         // Hide all tab contents
@@ -552,6 +733,10 @@
       async function generatePDF() {
         const element = getCurrentActiveTab();
 
+        // Temporariamente ocultar botões de limpar durante exportação
+        const clearButtons = element.querySelectorAll(".clear-button");
+        clearButtons.forEach((button) => (button.style.display = "none"));
+
         // Ensure images are loaded before generating PDF
         await Promise.all(
           Array.from(element.querySelectorAll("img")).map((img) => {
@@ -569,6 +754,9 @@
           allowTaint: true,
           logging: false,
         });
+
+        // Restaurar botões de limpar após a captura
+        clearButtons.forEach((button) => (button.style.display = "block"));
 
         const imgData = canvas.toDataURL("image/png");
         const { jsPDF } = window.jspdf;
