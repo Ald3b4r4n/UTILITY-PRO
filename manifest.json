@@ -1,6 +1,6 @@
 {
   "name": "Documentos Policiais",
-  "short_name": "DocPol",
+  "short_name": "utilitypro",
   "description": "Sistema para geração de documentos policiais",
   "start_url": "/",
   "display": "standalone",
