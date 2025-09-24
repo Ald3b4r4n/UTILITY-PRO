@@ -3,11 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentos Policiais</title>
+    <title>UTILITY PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.5/dist/signature_pad.umd.min.js"></script>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#3b82f6" />
+
+    <!-- iOS meta tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Documentos Policiais" />
+    <link rel="apple-touch-icon" href="icon.png" />
+
+    <!-- Windows meta tags -->
+    <meta name="msapplication-TileImage" content="icon.png" />
+    <meta name="msapplication-TileColor" content="#3b82f6" />
     <style>
       @media print {
         .no-print {
@@ -171,7 +183,14 @@
       </h3>
       <h3 class="text-xl font-bold text-center mb-4">2º PEL OPERACIONAL PM</h3>
 
-      <p class="text-center mb-4">RAI nº: ________________________</p>
+      <p class="text-center mb-4">
+        RAI nº:
+        <input
+          type="text"
+          class="input-field w-32 inline-block"
+          id="rai-relatorio"
+        />
+      </p>
 
       <h3 class="text-xl font-bold text-center mb-4">RELATÓRIO MÉDICO</h3>
 
@@ -856,6 +875,34 @@
           exportToPDF();
         }
       }
+    </script>
+
+    <script>
+      // Registrar Service Worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then(function (registration) {
+              console.log(
+                "ServiceWorker registrado com sucesso: ",
+                registration.scope
+              );
+            })
+            .catch(function (error) {
+              console.log("Falha no registro do ServiceWorker: ", error);
+            });
+        });
+      }
+
+      // Detectar se está em modo PWA
+      window.isPWA = function () {
+        return (
+          window.matchMedia("(display-mode: standalone)").matches ||
+          window.navigator.standalone ||
+          document.referrer.includes("android-app://")
+        );
+      };
     </script>
   </body>
 </html>
