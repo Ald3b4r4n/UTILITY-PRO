@@ -13,6 +13,11 @@
         .no-print {
           display: none !important;
         }
+
+        /* Hide borders when printing */
+        .signature-pad {
+          border: none !important;
+        }
       }
 
       .input-field {
@@ -89,6 +94,11 @@
         background-color: #fff;
         width: 100%;
         max-width: 500px;
+      }
+
+      /* Add a class for export mode without borders */
+      .export-mode .signature-pad {
+        border: none;
       }
 
       .clear-button {
@@ -311,34 +321,35 @@
         Provimento nº 18/2015 - Corregedoria Geral de Justiça do Estado de Goiás
       </p>
 
-      <p class="mb-4">
+      <p class="mb-4 mx-2 my-1">
         Eu
-        <input type="text" class="input-field w-3/4 inline-block" />, já
-        devidamente qualificado (a) no Termo Circunstanciado de Ocorrência
+        <input type="text" class="input-field w-3/4 inline-block mx-2 my-1" />,
+        já devidamente qualificado (a) no Termo Circunstanciado de Ocorrência
         lavrado pela Polícia Militar sob nº
-        <input type="text" class="input-field w-16 inline-block" />/
+        <input type="text" class="input-field w-16 inline-block mx-2 my-1" />/
         <input
           type="text"
-          class="input-field w-16 inline-block"
+          class="input-field w-16 inline-block mx-2 my-1"
           placeholder="Ano"
         />
         -
         <input
           type="text"
-          class="input-field w-24 inline-block"
+          class="input-field w-24 inline-block mx-2 my-1"
           placeholder="Unidade"
         />
-        e RAI nº <input type="text" class="input-field w-32 inline-block" />,
+        e RAI nº
+        <input type="text" class="input-field w-32 inline-block mx-2 my-1" />,
         por este instrumento, manifesto meu interesse em REPRESENTAR em desfavor
         do autor do fato constante no respectivo Termo de Ocorrência.
       </p>
 
-      <p class="mb-8">
+      <p class="mb-8 mx-2 my-1">
         Declaro estar ciente de que devo comparecer ao JUIZADO ESPECIAL CRIMINAL
         da Comarca de
         <input
           type="text"
-          class="input-field inline-block w-48"
+          class="input-field inline-block w-48 mx-2 my-1"
           placeholder="Alto Paraíso de Goiás"
         />, no dia
         <input type="text" class="input-field w-16 inline-block" />/<input
@@ -489,13 +500,13 @@
       <p class="mb-4">
         Nos termos do parágrafo único do art. 69 da lei 9.099/95, deixo de impor
         prisão em flagrante delito a
-        <input type="text" class="input-field w-3/4 inline-block" /> já
-        devidamente qualificado, em razão da lavratura do Termo Circunstanciado
-        de Ocorrência nº:
-        <input type="text" class="input-field w-16 inline-block" />/
+        <input type="text" class="input-field w-3/4 inline-block mx-2 my-1" />
+        já devidamente qualificado, em razão da lavratura do Termo
+        Circunstanciado de Ocorrência nº:
+        <input type="text" class="input-field w-16 inline-block mx-2 my-1" />/
         <input
           type="text"
-          class="input-field w-16 inline-block"
+          class="input-field w-16 inline-block mx-2 my-1"
           placeholder="Ano"
         />
         -
@@ -733,6 +744,9 @@
       async function generatePDF() {
         const element = getCurrentActiveTab();
 
+        // Add export-mode class to hide signature pad borders
+        element.classList.add("export-mode");
+
         // Temporariamente ocultar botões de limpar durante exportação
         const clearButtons = element.querySelectorAll(".clear-button");
         clearButtons.forEach((button) => (button.style.display = "none"));
@@ -754,6 +768,9 @@
           allowTaint: true,
           logging: false,
         });
+
+        // Remove export-mode class after canvas capture
+        element.classList.remove("export-mode");
 
         // Restaurar botões de limpar após a captura
         clearButtons.forEach((button) => (button.style.display = "block"));
