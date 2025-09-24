@@ -40,7 +40,7 @@
       .text-area-field {
         border: 1px solid #666;
         width: 100%;
-        min-height: 60px;
+        min-height: 100px; /* Increased height for more writing space */
         margin-top: 5px;
         margin-bottom: 10px;
       }
@@ -168,7 +168,7 @@
         />
       </div>
 
-      <!-- Static fields for manual filling -->
+      <!-- Static fields for manual filling with larger text areas -->
       <div class="mb-4">
         <p class="mb-2"><strong>I - ESTADO GERAL:</strong></p>
         <div class="static-field text-area-field"></div>
@@ -212,19 +212,8 @@
 
       <div class="mb-2">
         <p>
-          Local e data:
-          <input
-            type="text"
-            class="input-field w-32 inline-block"
-            placeholder="Cidade"
-          />
-          / GO, <input type="text" class="input-field w-8 inline-block" /> de
-          <input type="text" class="input-field w-32 inline-block" /> de
-          <input
-            type="text"
-            class="input-field w-16 inline-block"
-            placeholder="Ano"
-          />
+          Local e data: ____________________ / GO, ____ de ____________ de
+          _______
         </p>
       </div>
 
