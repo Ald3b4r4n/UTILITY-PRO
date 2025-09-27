@@ -30,6 +30,21 @@
         .signature-pad {
           border: none !important;
         }
+
+        /* Ensure proper A4 layout for print */
+        body {
+          margin: 0;
+          padding: 0;
+        }
+
+        .tab-content {
+          max-width: none !important;
+          width: 210mm !important;
+          min-height: 297mm !important;
+          margin: 0 !important;
+          padding: 15mm !important;
+          box-sizing: border-box;
+        }
       }
 
       .input-field {
@@ -150,6 +165,18 @@
 
       .footer a:hover {
         text-decoration: underline;
+      }
+
+      /* PDF optimization styles */
+      .pdf-container {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto;
+        padding: 15mm;
+        box-sizing: border-box;
+        background: white;
+        font-size: 12pt;
+        line-height: 1.4;
       }
     </style>
   </head>
@@ -832,11 +859,15 @@
           })
         );
 
+        // Configurações otimizadas para A4
         const canvas = await html2canvas(element, {
-          scale: 2,
+          scale: 3, // Aumentado para melhor qualidade
           useCORS: true,
           allowTaint: true,
           logging: false,
+          width: element.scrollWidth,
+          height: element.scrollHeight,
+          backgroundColor: "#ffffff",
         });
 
         // Remove export-mode class after canvas capture
@@ -845,25 +876,86 @@
         // Restaurar botões de limpar após a captura
         clearButtons.forEach((button) => (button.style.display = "block"));
 
-        const imgData = canvas.toDataURL("image/png");
+        const imgData = canvas.toDataURL("image/png", 1.0);
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF("p", "mm", "a4");
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = pdf.internal.pageSize.getHeight();
-        const imgWidth = canvas.width / 2; // since scale=2
-        const imgHeight = canvas.height / 2;
-        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-        const imgX = (pdfWidth - imgWidth * ratio) / 2;
-        const imgY = 0;
 
-        pdf.addImage(
-          imgData,
-          "PNG",
-          imgX,
-          imgY,
-          imgWidth * ratio,
-          imgHeight * ratio
+        // Configurações A4 em mm
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = 210; // A4 width in mm
+        const pdfHeight = 297; // A4 height in mm
+        const margin = 10; // Margem em mm
+
+        // Área útil do PDF
+        const usableWidth = pdfWidth - margin * 2;
+        const usableHeight = pdfHeight - margin * 2;
+
+        // Dimensões da imagem
+        const imgWidth = canvas.width / 3; // Dividido pela escala
+        const imgHeight = canvas.height / 3;
+
+        // Calcular proporção para caber na página
+        const ratio = Math.min(
+          usableWidth / imgWidth,
+          usableHeight / imgHeight
         );
+
+        // Dimensões finais da imagem no PDF
+        const finalWidth = imgWidth * ratio;
+        const finalHeight = imgHeight * ratio;
+
+        // Centralizar a imagem
+        const imgX = (pdfWidth - finalWidth) / 2;
+        const imgY = margin;
+
+        // Se a imagem for muito alta, pode precisar de múltiplas páginas
+        if (finalHeight > usableHeight) {
+          let yPosition = 0;
+          const pageHeight = usableHeight;
+
+          while (yPosition < imgHeight) {
+            const sourceY = yPosition;
+            const sourceHeight = Math.min(
+              pageHeight / ratio,
+              imgHeight - yPosition
+            );
+
+            if (yPosition > 0) {
+              pdf.addPage();
+            }
+
+            // Criar um canvas temporário para a seção atual
+            const tempCanvas = document.createElement("canvas");
+            const tempCtx = tempCanvas.getContext("2d");
+            tempCanvas.width = canvas.width;
+            tempCanvas.height = sourceHeight * 3; // Multiplicado pela escala
+
+            tempCtx.drawImage(
+              canvas,
+              0,
+              sourceY * 3,
+              canvas.width,
+              sourceHeight * 3,
+              0,
+              0,
+              canvas.width,
+              sourceHeight * 3
+            );
+
+            const tempImgData = tempCanvas.toDataURL("image/png", 1.0);
+            pdf.addImage(
+              tempImgData,
+              "PNG",
+              imgX,
+              margin,
+              finalWidth,
+              sourceHeight * ratio
+            );
+
+            yPosition += sourceHeight;
+          }
+        } else {
+          pdf.addImage(imgData, "PNG", imgX, imgY, finalWidth, finalHeight);
+        }
 
         return pdf;
       }
