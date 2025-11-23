@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0" />
     <title>UTILITY PRO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -21,7 +21,26 @@
     <meta name="msapplication-TileImage" content="icon.png" />
     <meta name="msapplication-TileColor" content="#3b82f6" />
     <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
       @media print {
+        /* Força escala fixa - essencial para mobile */
+        html {
+          zoom: 1;
+          -webkit-text-size-adjust: 100%;
+          -moz-text-size-adjust: 100%;
+          -ms-text-size-adjust: 100%;
+          text-size-adjust: 100%;
+        }
+
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+
         .no-print {
           display: none !important;
         }
@@ -31,19 +50,37 @@
           border: none !important;
         }
 
-        /* Ensure proper A4 layout for print */
+        /* Ensure proper A4 layout for print - mobile e desktop */
         body {
-          margin: 0;
-          padding: 0;
+          margin: 0 !important;
+          padding: 0 !important;
+          width: 210mm !important;
+          height: 297mm !important;
+          overflow: hidden !important;
         }
 
         .tab-content {
           max-width: none !important;
           width: 210mm !important;
           min-height: 297mm !important;
-          margin: 0 !important;
+          margin: 0 auto !important;
           padding: 15mm !important;
-          box-sizing: border-box;
+          box-sizing: border-box !important;
+          transform: none !important;
+          position: relative !important;
+        }
+
+        /* Garantir que imagens não sejam redimensionadas */
+        img {
+          max-width: 100% !important;
+          height: auto !important;
+          page-break-inside: avoid !important;
+        }
+
+        /* Evitar quebras de linha indesejadas */
+        h1, h2, h3, h4, h5, h6, p {
+          page-break-after: avoid !important;
+          page-break-inside: avoid !important;
         }
       }
 
@@ -180,21 +217,131 @@
       }
     </style>
   </head>
-  <body class="bg-gray-100 p-4">
-    <!-- Tabs navigation -->
-    <div class="max-w-4xl mx-auto mb-2 no-print">
-      <div class="flex border-b border-gray-200">
-        <div class="tab active" onclick="openTab(event, 'relatorio-medico')">
-          Relatório Médico
+  <body class="bg-gradient-to-br from-blue-50 via-white to-blue-50 min-h-screen">
+    <!-- Página Inicial -->
+    <div id="home-page" class="min-h-screen flex items-center justify-center p-4">
+      <div class="max-w-6xl w-full">
+        <!-- Header -->
+        <div class="text-center mb-12">
+          <h1 class="text-5xl font-bold text-gray-800 mb-4">
+            UTILITY PRO
+          </h1>
+          <p class="text-xl text-gray-600 mb-2">
+            Sistema de Documentos Policiais
+          </p>
+          <p class="text-gray-500">
+            Selecione o tipo de documento que deseja gerar
+          </p>
         </div>
-        <div class="tab" onclick="openTab(event, 'termo-manifestacao')">
-          Termo de Manifestação do Ofendido
+
+        <!-- Cards de Documentos -->
+        <div class="grid md:grid-cols-3 gap-6 mb-8">
+          <!-- Card 1: Relatório Médico -->
+          <div 
+            onclick="showDocument('relatorio-medico')" 
+            class="document-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 overflow-hidden group"
+          >
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white">
+              <svg class="w-16 h-16 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+              </svg>
+              <h3 class="text-2xl font-bold text-center">Relatório Médico</h3>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 text-center">
+                Comunicação obrigatória de fato no exercício da Medicina
+              </p>
+              <div class="mt-4 text-center">
+                <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  Art. 66-II, Decreto Lei 3.688/1941
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2: Termo de Manifestação -->
+          <div 
+            onclick="showDocument('termo-manifestacao')" 
+            class="document-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 overflow-hidden group"
+          >
+            <div class="bg-gradient-to-br from-green-500 to-green-600 p-6 text-white">
+              <svg class="w-16 h-16 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-2xl font-bold text-center">Termo de Manifestação</h3>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 text-center">
+                Manifestação do ofendido em representar contra o autor do fato
+              </p>
+              <div class="mt-4 text-center">
+                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  Art. 69, Lei 9.099/1995
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3: Termo de Compromisso -->
+          <div 
+            onclick="showDocument('termo-compromisso')" 
+            class="document-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 overflow-hidden group"
+          >
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 p-6 text-white">
+              <svg class="w-16 h-16 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-2xl font-bold text-center">Termo de Compromisso</h3>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 text-center">
+                Compromisso de comparecimento ao Juizado Especial Criminal
+              </p>
+              <div class="mt-4 text-center">
+                <span class="inline-block bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  Art. 69, Lei 9.099/1995
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="tab" onclick="openTab(event, 'termo-compromisso')">
-          Termo de Compromisso de Comparecimento
+
+        <!-- Footer da Home -->
+        <div class="text-center text-gray-500 text-sm">
+          <p>Desenvolvido por Antonio Rafael</p>
         </div>
       </div>
     </div>
+
+    <!-- Área de Documentos (inicialmente oculta) -->
+    <div id="documents-area" style="display: none;">
+      <!-- Botão Voltar -->
+      <div class="max-w-4xl mx-auto pt-4 pb-2 no-print">
+        <button 
+          onclick="backToHome()" 
+          class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors duration-200"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Voltar
+        </button>
+      </div>
+
+      <!-- Tabs navigation -->
+      <div class="max-w-4xl mx-auto mb-2 no-print">
+        <div class="flex border-b border-gray-200">
+          <div class="tab" id="tab-relatorio-medico" onclick="openTab(event, 'relatorio-medico')">
+            Relatório Médico
+          </div>
+          <div class="tab" id="tab-termo-manifestacao" onclick="openTab(event, 'termo-manifestacao')">
+            Termo de Manifestação do Ofendido
+          </div>
+          <div class="tab" id="tab-termo-compromisso" onclick="openTab(event, 'termo-compromisso')">
+            Termo de Compromisso de Comparecimento
+          </div>
+        </div>
+      </div>
 
     <!-- Tab 1: Relatório Médico -->
     <div
@@ -757,6 +904,7 @@
         </p>
       </div>
     </footer>
+    </div><!-- Fim documents-area -->
 
     <script>
       // Initialize signature pads
@@ -805,6 +953,51 @@
             signaturePadAutorCompromisso.clear();
           });
       });
+
+      // Navegação entre home e documentos
+      function showDocument(documentId) {
+        // Ocultar página inicial
+        document.getElementById('home-page').style.display = 'none';
+        // Mostrar área de documentos
+        document.getElementById('documents-area').style.display = 'block';
+        
+        // Alterar background do body
+        document.body.className = 'bg-gray-100 p-4';
+        
+        // Simular clique na tab correspondente
+        const tabElement = document.getElementById('tab-' + documentId);
+        if (tabElement) {
+          // Ativar a tab
+          const tabs = document.getElementsByClassName('tab');
+          for (let i = 0; i < tabs.length; i++) {
+            tabs[i].classList.remove('active');
+          }
+          tabElement.classList.add('active');
+          
+          // Mostrar o conteúdo
+          const tabContents = document.getElementsByClassName('tab-content');
+          for (let i = 0; i < tabContents.length; i++) {
+            tabContents[i].classList.remove('active');
+          }
+          document.getElementById(documentId).classList.add('active');
+        }
+        
+        // Scroll para o topo
+        window.scrollTo(0, 0);
+      }
+
+      function backToHome() {
+        // Mostrar página inicial
+        document.getElementById('home-page').style.display = 'flex';
+        // Ocultar área de documentos
+        document.getElementById('documents-area').style.display = 'none';
+        
+        // Restaurar background original
+        document.body.className = 'bg-gradient-to-br from-blue-50 via-white to-blue-50 min-h-screen';
+        
+        // Scroll para o topo
+        window.scrollTo(0, 0);
+      }
 
       // Tab switching functionality
       function openTab(evt, tabName) {
