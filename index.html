@@ -1034,6 +1034,20 @@
       async function generatePDF() {
         const element = getCurrentActiveTab();
 
+        // Salvar estilos originais
+        const originalStyles = {
+          width: element.style.width,
+          maxWidth: element.style.maxWidth,
+          margin: element.style.margin,
+          boxSizing: element.style.boxSizing
+        };
+
+        // Forçar layout de desktop/A4
+        element.style.width = "210mm";
+        element.style.maxWidth = "none";
+        element.style.margin = "0";
+        element.style.boxSizing = "border-box";
+
         // Add export-mode class to hide signature pad borders
         element.classList.add("export-mode");
 
@@ -1058,10 +1072,17 @@
           useCORS: true,
           allowTaint: true,
           logging: false,
-          width: element.scrollWidth,
-          height: element.scrollHeight,
+          width: element.offsetWidth, // Usar offsetWidth após redimensionamento
+          height: element.offsetHeight,
+          windowWidth: 1200, // Simular largura de desktop
           backgroundColor: "#ffffff",
         });
+
+        // Restaurar estilos originais
+        element.style.width = originalStyles.width;
+        element.style.maxWidth = originalStyles.maxWidth;
+        element.style.margin = originalStyles.margin;
+        element.style.boxSizing = originalStyles.boxSizing;
 
         // Remove export-mode class after canvas capture
         element.classList.remove("export-mode");

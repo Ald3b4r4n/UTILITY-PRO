@@ -111,8 +111,7 @@ body {
   line-height: 1.4;
 }
 
-.export-mode {
-}
+
 
 /* Replicar regras essenciais de @media print durante exportação */
 body.export-mode {
@@ -122,6 +121,8 @@ body.export-mode {
   height: 297mm !important;
   overflow: hidden !important;
   -webkit-font-smoothing: antialiased !important;
+  -webkit-text-size-adjust: 100% !important;
+  text-size-adjust: 100% !important;
 }
 
 .export-mode .tab-content {
@@ -135,6 +136,8 @@ body.export-mode {
   position: relative !important;
   font-size: 12pt !important;
   line-height: 1.5 !important;
+  background-color: white !important;
+  box-shadow: none !important;
 }
 
 /* Não aplicar regras globais às imagens para evitar ampliação indevida */
