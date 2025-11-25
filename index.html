@@ -132,18 +132,38 @@
         display: block;
       }
 
+      .tabs-container {
+        display: flex;
+        background: white;
+        border-radius: 0.5rem 0.5rem 0 0;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        overflow-x: auto;
+        margin-bottom: 20px;
+      }
+
       .tab {
         cursor: pointer;
-        padding: 10px 20px;
-        border: 1px solid #ccc;
-        background-color: #f1f1f1;
-        border-radius: 5px 5px 0 0;
-        margin-right: 2px;
+        padding: 12px 24px;
+        font-weight: 600;
+        color: #6b7280;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        white-space: nowrap;
+      }
+
+      .tab:hover {
+        color: #3b82f6;
+        background-color: #f3f4f6;
       }
 
       .tab.active {
+        color: #2563eb;
+        border-bottom: 2px solid #2563eb;
         background-color: white;
-        border-bottom: 1px solid white;
       }
 
       .signature-container {
@@ -304,11 +324,40 @@
               </div>
             </div>
           </div>
+
+          <!-- Card 4: Termo de Desistência -->
+          <div 
+            onclick="showDocument('termo-desistencia')" 
+            class="document-card bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-2 overflow-hidden group"
+          >
+            <div class="bg-gradient-to-br from-red-500 to-red-600 p-6 text-white">
+              <svg class="w-16 h-16 mb-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <h3 class="text-2xl font-bold text-center">Termo de Desistência</h3>
+            </div>
+            <div class="p-6">
+              <p class="text-gray-600 text-center">
+                Desistência de representação do ofendido
+              </p>
+              <div class="mt-4 text-center">
+                <span class="inline-block bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm font-semibold">
+                  Art. 69, Lei 9.099/1995
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Footer da Home -->
         <div class="text-center text-gray-500 text-sm">
           <p>Desenvolvido por Antonio Rafael</p>
+          <a href="https://wa.me/5561982887294" target="_blank" rel="noopener" class="text-green-600 hover:text-green-700 font-medium flex items-center justify-center gap-1 mt-2">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.598 2.669-.699c.968.528 1.93.812 3.379.812 3.198 0 5.767-2.586 5.767-5.766.001-3.187-2.575-5.77-5.766-5.771zm7.418 1.718c-1.27-2.135-3.468-3.563-5.94-3.563-3.961 0-7.184 3.224-7.184 7.185 0 1.581.516 3.036 1.387 4.216l-1.712 6.27 6.492-1.703c1.125.613 2.411.966 3.785.966 3.961 0 7.184-3.224 7.185-7.185 0-2.472-1.428-4.67-3.563-5.941zm-10.02 1.488c.171-.371.434-.371.802-.371.286 0 .571.029.829.629.257.6.858 2.087.943 2.229.086.143.143.343.029.572-.115.229-.2.343-.4.572-.2.228-.429.514-.6.657-.2.171-.4.371 0 1.057.4.686 1.486 1.771 2.743 2.886.486.429.915.686 1.2.829.286.143.515.114.715-.114.2-.229.857-1.001 1.086-1.344.229-.343.457-.286.772-.171.314.114 2 .943 2.343 1.115.343.171.572.257.658.4.086.143.086.829-.2 1.629-.286.8-1.686 1.172-2.315 1.229-.629.057-1.229.229-4.287-1.229-3.687-1.772-6.03-5.63-6.201-5.859-.172-.229-1.515-2.029-1.515-3.858 0-1.829.943-2.744 1.286-3.115z"/>
+            </svg>
+            Contato WhatsApp
+          </a>
         </div>
       </div>
     </div>
@@ -330,16 +379,19 @@
 
       <!-- Tabs navigation -->
       <div class="max-w-4xl mx-auto mb-2 no-print">
-        <div class="flex border-b border-gray-200">
-          <div class="tab" id="tab-relatorio-medico" onclick="openTab(event, 'relatorio-medico')">
+        <div class="tabs-container">
+          <button class="tab" id="tab-relatorio-medico" onclick="openTab(event, 'relatorio-medico')">
             Relatório Médico
-          </div>
-          <div class="tab" id="tab-termo-manifestacao" onclick="openTab(event, 'termo-manifestacao')">
-            Termo de Manifestação do Ofendido
-          </div>
-          <div class="tab" id="tab-termo-compromisso" onclick="openTab(event, 'termo-compromisso')">
-            Termo de Compromisso de Comparecimento
-          </div>
+          </button>
+          <button class="tab" id="tab-termo-manifestacao" onclick="openTab(event, 'termo-manifestacao')">
+            Termo de Manifestação
+          </button>
+          <button class="tab" id="tab-termo-compromisso" onclick="openTab(event, 'termo-compromisso')">
+            Termo de Compromisso
+          </button>
+          <button class="tab" id="tab-termo-desistencia" onclick="openTab(event, 'termo-desistencia')">
+            Termo de Desistência
+          </button>
         </div>
       </div>
 
@@ -532,6 +584,7 @@
       <div class="mb-2">
         <input
           type="text"
+          id="manifestacao-crpm"
           class="header-input"
           placeholder="(informar CRPM) COMANDO REGIONAL DE POLÍCIA MILITAR"
         />
@@ -539,6 +592,7 @@
       <div class="mb-4">
         <input
           type="text"
+          id="manifestacao-unidade"
           class="header-input"
           placeholder="(informar unidade) DE POLÍCIA MILITAR"
         />
@@ -709,6 +763,7 @@
       <div class="mb-2">
         <input
           type="text"
+          id="compromisso-crpm"
           class="header-input"
           placeholder="(informar CRPM) COMANDO REGIONAL DE POLÍCIA MILITAR"
         />
@@ -716,6 +771,7 @@
       <div class="mb-4">
         <input
           type="text"
+          id="compromisso-unidade"
           class="header-input"
           placeholder="(informar unidade) DE POLÍCIA MILITAR"
         />
@@ -877,6 +933,152 @@
       </div>
     </div>
 
+    <!-- Tab 4: Termo de Desistência -->
+    <div
+      id="termo-desistencia"
+      class="tab-content max-w-4xl mx-auto bg-white p-6 rounded shadow"
+    >
+      <!-- Header with logos -->
+      <div class="flex justify-between items-center mb-4">
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/1/12/PMGO_Logo.png"
+          alt="PMGO Logo"
+          class="h-24"
+        />
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Bras%C3%A3o_de_Goi%C3%A1s.svg"
+          alt="Estado de Goiás Coat of Arms"
+          class="h-24"
+        />
+      </div>
+
+      <!-- Headers -->
+      <h2 class="text-2xl font-bold text-center mb-4">ESTADO DE GOIÁS</h2>
+      <h3 class="text-xl font-bold text-center mb-2">
+        SECRETARIA DE SEGURANÇA PÚBLICA
+      </h3>
+      <h3 class="text-xl font-bold text-center mb-2">
+        POLÍCIA MILITAR DO ESTADO DE GOIÁS
+      </h3>
+      <div class="mb-2">
+        <input
+          type="text"
+          id="desistencia-crpm"
+          class="header-input"
+          placeholder="(informar CRPM) COMANDO REGIONAL DE POLÍCIA MILITAR"
+        />
+      </div>
+      <div class="mb-4">
+        <input
+          type="text"
+          id="desistencia-unidade"
+          class="header-input"
+          placeholder="(informar unidade) DE POLÍCIA MILITAR"
+        />
+      </div>
+
+      <h3 class="text-xl font-bold text-center mb-2 mt-6">
+        TERMO DE DESISTÊNCIA DE MANIFESTAÇÃO DO OFENDIDO
+      </h3>
+      <p class="text-center mb-6">
+        Artigo 69 - Lei 9.099/1995 c/c<br />
+        Artigo 39 – Decreto- lei 3689/1941<br />
+        Provimento nº 18/2015 - Corregedoria Geral de Justiça do Estado de Goiás
+      </p>
+
+      <p class="mb-4">
+        RAI nº:
+        <input type="text" class="input-field w-32 inline-block" /> /
+        <input type="text" class="input-field w-24 inline-block" placeholder="Ano" />
+      </p>
+
+      <p class="mb-4 text-justify">
+        Eu,
+        <input type="text" class="input-field w-3/4 inline-block" placeholder="Nome do Ofendido" />,
+        já devidamente qualificado (a) na Ocorrência lavrada pela Polícia Militar sob o nº
+        <input type="text" class="input-field w-24 inline-block" />/
+        <input type="text" class="input-field w-24 inline-block" placeholder="Ano" />,
+        por este instrumento, manifesto meu interesse em <strong>NÃO REPRESENTAR</strong> em desfavor do autor
+        do fato constante na respectiva Ocorrência.
+      </p>
+      <p class="mb-8 text-justify">
+        Declaro estar ciente de que, ainda posso em um prazo decadencial de 06 (seis) meses a contar desta data, fazer a devida representação contra o autor do fato.
+      </p>
+
+      <p class="mt-12 mb-2 text-right">
+        <input
+          type="text"
+          class="input-field inline-block w-48"
+          placeholder="Alto Paraíso de Goiás"
+        />
+        / GO, <input type="text" class="input-field w-12 inline-block" /> de
+        <input type="text" class="input-field w-32 inline-block" /> de
+        <input
+          type="text"
+          class="input-field w-16 inline-block"
+          placeholder="Ano"
+        />.
+      </p>
+
+      <div class="mt-12 mb-8">
+        <p class="mb-1">Policial Militar:</p>
+        <p>(Nome completo, posto/graduação, RG)</p>
+        <br />
+
+        <input
+          type="text"
+          class="signature-name-field"
+          id="nome-policial-desistencia"
+          placeholder="Nome do Policial Militar"
+        />
+
+        <div class="signature-container">
+          <canvas
+            id="signature-pad-policial-desistencia"
+            class="signature-pad"
+            width="500"
+            height="150"
+          ></canvas>
+          <button
+            type="button"
+            class="clear-button no-print"
+            id="clear-policial-desistencia"
+          >
+            Limpar
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <p class="mb-1">Vítima/Representante:</p>
+        <p>(Nome completo)</p>
+        <br />
+
+        <input
+          type="text"
+          class="signature-name-field"
+          id="nome-vitima-desistencia"
+          placeholder="Nome da Vítima/Representante"
+        />
+
+        <div class="signature-container">
+          <canvas
+            id="signature-pad-vitima-desistencia"
+            class="signature-pad"
+            width="500"
+            height="150"
+          ></canvas>
+          <button
+            type="button"
+            class="clear-button no-print"
+            id="clear-vitima-desistencia"
+          >
+            Limpar
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Buttons - outside the print container -->
     <div class="max-w-4xl mx-auto mt-4 flex space-x-4 no-print">
       <button
@@ -898,8 +1100,11 @@
       <div class="max-w-4xl mx-auto">
         <p>
           Desenvolvido por Antonio Rafael -
-          <a href="https://wa.me/5561982887294" target="_blank" rel="noopener">
+          <a href="https://wa.me/5561982887294" target="_blank" rel="noopener" class="text-blue-600 hover:underline">
             Entrar em contato
+          </a> | 
+          <a href="https://ald3b4r4n.github.io/portfolio/" target="_blank" rel="noopener" class="text-blue-600 hover:underline">
+            Portfólio
           </a>
         </p>
       </div>
@@ -912,6 +1117,8 @@
       let signaturePadVitimaManifestacao;
       let signaturePadPolicialCompromisso;
       let signaturePadAutorCompromisso;
+      let signaturePadPolicialDesistencia;
+      let signaturePadVitimaDesistencia;
 
       document.addEventListener("DOMContentLoaded", function () {
         // Inicializar os pads de assinatura
@@ -926,6 +1133,12 @@
         );
         signaturePadAutorCompromisso = new SignaturePad(
           document.getElementById("signature-pad-autor-compromisso")
+        );
+        signaturePadPolicialDesistencia = new SignaturePad(
+          document.getElementById("signature-pad-policial-desistencia")
+        );
+        signaturePadVitimaDesistencia = new SignaturePad(
+          document.getElementById("signature-pad-vitima-desistencia")
         );
 
         // Botões para limpar assinaturas
@@ -952,7 +1165,53 @@
           .addEventListener("click", function () {
             signaturePadAutorCompromisso.clear();
           });
+
+        document
+          .getElementById("clear-policial-desistencia")
+          .addEventListener("click", function () {
+            signaturePadPolicialDesistencia.clear();
+          });
+
+        document
+          .getElementById("clear-vitima-desistencia")
+          .addEventListener("click", function () {
+            signaturePadVitimaDesistencia.clear();
+          });
+
+        // Inicializar sincronização de cabeçalhos
+        setupHeaderSynchronization();
       });
+
+      // Função para sincronizar os cabeçalhos entre os documentos
+      function setupHeaderSynchronization() {
+        const manifestacaoCrpm = document.getElementById('manifestacao-crpm');
+        const manifestacaoUnidade = document.getElementById('manifestacao-unidade');
+        const compromissoCrpm = document.getElementById('compromisso-crpm');
+        const compromissoUnidade = document.getElementById('compromisso-unidade');
+        const desistenciaCrpm = document.getElementById('desistencia-crpm');
+        const desistenciaUnidade = document.getElementById('desistencia-unidade');
+
+        const crpmInputs = [manifestacaoCrpm, compromissoCrpm, desistenciaCrpm].filter(Boolean);
+        const unidadeInputs = [manifestacaoUnidade, compromissoUnidade, desistenciaUnidade].filter(Boolean);
+
+        crpmInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            const value = this.value;
+            crpmInputs.forEach(otherInput => {
+              if (otherInput !== input) otherInput.value = value;
+            });
+          });
+        });
+
+        unidadeInputs.forEach(input => {
+          input.addEventListener('input', function() {
+            const value = this.value;
+            unidadeInputs.forEach(otherInput => {
+              if (otherInput !== input) otherInput.value = value;
+            });
+          });
+        });
+      }
 
       // Navegação entre home e documentos
       function showDocument(documentId) {
@@ -1186,6 +1445,8 @@
           filename = "termo_manifestacao";
         } else if (activeTabId === "termo-compromisso") {
           filename = "termo_compromisso";
+        } else if (activeTabId === "termo-desistencia") {
+          filename = "termo_desistencia";
         }
 
         pdf.save(`${filename}.pdf`);
@@ -1209,6 +1470,9 @@
         } else if (activeTabId === "termo-compromisso") {
           filename = "termo_compromisso";
           title = "Termo de Compromisso de Comparecimento";
+        } else if (activeTabId === "termo-desistencia") {
+          filename = "termo_desistencia";
+          title = "Termo de Desistência de Manifestação";
         }
 
         const file = new File([blob], `${filename}.pdf`, {
